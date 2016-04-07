@@ -43,9 +43,13 @@ class BTStack:
         # set up device
         self.command(HCI_Cmd_Reset())
 
+        print("Reset complete!")
+
         # get BD ADDR
         r = self.command(HCI_Cmd_Read_BD_Addr())
         self.addr = str(r[HCI_Cmd_Complete_Read_BD_Addr])[::-1]
+
+        print("Read BD Addr: " + self.addr)
 
         self.command(HCI_Cmd_Set_Event_Filter())
         self.command(HCI_Cmd_Connect_Accept_Timeout())
@@ -55,6 +59,9 @@ class BTStack:
         self.command(HCI_Cmd_LE_Read_Buffer_Size())
 
     def get_socket(self, adapter):
+        if sys.platform == 'darwin':
+            import pyusb_bt
+            return pyusb_bt.socket_for_first_adapter()
         try:
             return BluetoothUserSocket(adapter)
         except BluetoothSocketError as e:

@@ -1,6 +1,6 @@
 from Crypto.Cipher import AES
 from scapy.layers.bluetooth import *
-from scapy.all import hexdump
+#from scapy.all import hexdump
 
 class SM():
     ia = None
